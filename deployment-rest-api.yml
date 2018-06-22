@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rest-service-deployment
+  labels:
+    app: rest-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+        app: spring-boot-rest-jpa
+  template:
+    metadata:
+      labels:
+        app: spring-boot-rest-jpa
+    spec:
+      containers:
+      - name: spring-boot-rest-jpa
+        image: spring-boot-rest-jpa:v1.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: k8s
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-boot-rest-service
+spec:
+  selector:
+    app: spring-boot-rest-jpa
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  externalIPs:
+    - 192.168.99.101
+  type: LoadBalancer

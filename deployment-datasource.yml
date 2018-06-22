@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datasource-deployment
+  labels:
+    app: datasource
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+        app: datasource-postgres
+  template:
+    metadata:
+      labels:
+        app: datasource-postgres
+    spec:
+      containers:
+      - name: datasource-postgres
+        image: postgres:latest
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_PASSWORD
+          value: 1q2w3e4r
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: datasource-postgres-service
+spec:
+  selector:
+    app: datasource-postgres
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
+  type: ClusterIP

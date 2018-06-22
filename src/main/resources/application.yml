@@ -1,0 +1,45 @@
+server:
+  port: 8080
+  servlet:
+    contextPath: /spring-boot-jpa-postgres
+---
+spring:
+  datasource:
+    url: jdbc:postgresql://192.168.99.100:5444/postgres
+    username: postgres
+    password: 1q2w3e4r
+  jpa:
+    generate-ddl: true
+    database: POSTGRESQL
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+---
+spring:
+  profiles: docker
+  datasource:
+    url: jdbc:postgresql://spring-boot-jpa-datasource:5432/postgres
+    username: postgres
+    password: 1q2w3e4r
+  jpa:
+    generate-ddl: true
+    database: POSTGRESQL
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+---
+spring:
+  profiles: k8s
+  datasource:
+    url: jdbc:postgresql://datasource-postgres-service:5432/postgres
+    username: postgres
+    password: 1q2w3e4r
+  jpa:
+    generate-ddl: true
+    database: POSTGRESQL
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
